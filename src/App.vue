@@ -9,7 +9,16 @@
         <button class="btn btn-primary" type="submit">Add</button>
       </div>
     </form>
-    {{ todoList }}
+    <div class="card mt-2">
+      <div class="card-body p-2">
+        {{ todoList[0].subject }}
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="card-body p-2">
+        {{ todoList[1].subject }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -19,7 +28,16 @@ import { ref } from "vue";
 export default {
   setup() {
     const todo = ref("");
-    const todoList = ref([]);
+    const todoList = ref([
+      {
+        id: 1,
+        subject: "배터리바꾸기",
+      },
+      {
+        id: 2,
+        subject: "안과가기",
+      },
+    ]);
 
     const onSubmit = () => {
       // e.preventDefault(); @submit:prevent가 같은 역할을 함
