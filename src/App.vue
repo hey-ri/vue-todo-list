@@ -9,14 +9,9 @@
         <button class="btn btn-primary" type="submit">Add</button>
       </div>
     </form>
-    <div class="card mt-2">
+    <div v-for="todo in todoList" :key="todo.id" class="card mt-2">
       <div class="card-body p-2">
-        {{ todoList[0].subject }}
-      </div>
-    </div>
-    <div class="card mt-2">
-      <div class="card-body p-2">
-        {{ todoList[1].subject }}
+        {{ todo.subject }}
       </div>
     </div>
   </div>
