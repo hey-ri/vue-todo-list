@@ -1,5 +1,5 @@
 <template>
-  <input type="text" :value="name" @input="updataName" />
+  <input type="text" v-model="name" />
   <button @click="onSubmit" class="btn btn-primary">Click</button>
 </template>
 
@@ -14,14 +14,9 @@ export default {
       console.log(name.value);
     };
 
-    const updataName = (e) => {
-      name.value = e.target.value;
-    };
-
     return {
       name,
       onSubmit,
-      updataName,
     };
   },
 };
