@@ -1,4 +1,11 @@
 <template>
+  <div v-show="toggle">true</div>
+  <div v-show="!toggle">false</div>
+  <!-- style로 display none을 통해 show되고 none 됨 -->
+  <div v-if="toggle">true</div>
+  <div v-else>false</div>
+  <!-- v-show는 초기 렌더링 비용이 많이 들고, v-if v-else는 toggle하는데에 비용이 많이 든다. show는 toggle을 많이 할 때 쓰면 좋고, 거의 바뀌지 않을 경우에 v-if를 사용하면 좋다.  -->
+  <button @click="onToggle">toggle</button>
   <div class="container">
     <h1>To-Do List</h1>
     <form class="d-flex" @submit.prevent="onSubmit">
@@ -22,6 +29,7 @@ import { ref } from "vue";
 
 export default {
   setup() {
+    const toggle = ref(false);
     const todo = ref("");
     const todoList = ref([
       {
@@ -43,10 +51,16 @@ export default {
       });
     };
 
+    const onToggle = () => {
+      toggle.value = !toggle.value;
+    };
+
     return {
       todo,
       onSubmit,
       todoList,
+      toggle,
+      onToggle,
     };
   },
 };
