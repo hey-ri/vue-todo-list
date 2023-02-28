@@ -1,14 +1,13 @@
 <template>
   <div class="container">
-    <p>count : {{ count }}</p>
-    <p>doublecount : {{ doubleCount }}</p>
-    <button @click="count++">Add one</button>
     <h1>To-Do List</h1>
+    <input type="text" v-model="searchText" class="form-control" placeholder="Search" />
+    <hr />
     <TodoSimpleForm @add-todo="addTodo" />
 
-    <div v-if="!todoList.length">추가된 Todo가 없습니다.</div>
+    <div v-if="!filterTodos.length" style="text-align: center; padding-top: 5px">Todo가 없습니다.</div>
 
-    <TodoList :todos="todoList" @toggle-todo="toggleTodo" @todo-idx="deleteTodo" />
+    <TodoList :todos="filterTodos" @toggle-todo="toggleTodo" @todo-idx="deleteTodo" />
   </div>
 </template>
 
@@ -43,12 +42,13 @@ export default {
       console.log(todoList.value[index]); // 앞뒤로 콘솔을 찍어주면서 트루, 폴스의 값을 확인하기
     };
 
-    const count = ref(1);
-    const doubleCount = computed(() => {
-      //state가 다른 state를 의존할때 사용함
-      //computed는 state를 감시하고 있다가 값이 변경되면 그 값을 참조하여 값을 바꾸는 것을 의미함
-      //값을 캐싱하고 있음 함수=메소드와 다른 점은 인자로 무엇인가를 받을 수 없음
-      return count.value * 2;
+    const searchText = ref('');
+    const filterTodos = computed(() => {
+      if (searchText.value) {
+        return todoList.value.filter((todo) => todo.subject.includes(searchText.value));
+      }
+
+      return todoList.value;
     });
 
     return {
@@ -56,8 +56,8 @@ export default {
       todoList,
       deleteTodo,
       toggleTodo,
-      count,
-      doubleCount,
+      searchText,
+      filterTodos,
     };
   },
 };
