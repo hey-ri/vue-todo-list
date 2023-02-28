@@ -12,14 +12,16 @@
       </div>
       <div v-show="hasError" style="color: red; font-weight: bold">This field can't be empty</div>
     </form>
-    <div v-for="todo in todoList" :key="todo.id" class="card mt-2">
-      <div class="card-body p-2">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" v-model="todo.completed" />
+    <div v-if="!todoList.length">추가된 Todo가 없습니다.</div>
+    <div v-for="(todo, index) in todoList" :key="todo.id" class="card mt-2">
+      <div class="card-body p-2 d-flex align-items-center">
+        <div class="form-check flex-grow-1">
           <label class="form-check-label" :class="{ todo: todo.completed }">
+            <input class="form-check-input" type="checkbox" v-model="todo.completed" />
             {{ todo.subject }}
           </label>
         </div>
+        <div><button class="btn btn-danger btn-small" @click="deleteTodo(index)">Delete</button></div>
       </div>
     </div>
   </div>
@@ -54,12 +56,17 @@ export default {
       }
     };
 
+    const deleteTodo = (index) => {
+      todoList.value.splice(index, 1);
+    };
+
     return {
       todo,
       onSubmit,
       todoList,
       hasError,
       todoStyle,
+      deleteTodo,
     };
   },
 };
