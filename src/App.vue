@@ -16,7 +16,7 @@
       <div class="card-body p-2">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" v-model="todo.completed" />
-          <label class="form-check-label">
+          <label class="form-check-label" :style="todo.completed ? todoStyle : {}">
             {{ todo.subject }}
           </label>
         </div>
@@ -33,6 +33,10 @@ export default {
     const todo = ref('');
     const todoList = ref([]);
     const hasError = ref(false);
+    const todoStyle = {
+      textDecoration: 'line-through',
+      color: 'gray',
+    };
 
     const onSubmit = () => {
       // e.preventDefault(); @submit:prevent가 같은 역할을 함
@@ -55,6 +59,7 @@ export default {
       onSubmit,
       todoList,
       hasError,
+      todoStyle,
     };
   },
 };
