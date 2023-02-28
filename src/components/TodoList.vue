@@ -20,6 +20,7 @@ export default {
       required: true,
     },
   },
+  emits: ['toggle-todo', 'todo-idx'],
   setup(props, context) {
     const toggleTodo = (index) => {
       context.emit('toggle-todo', index);
