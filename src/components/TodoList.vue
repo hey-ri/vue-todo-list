@@ -25,8 +25,13 @@ export default {
       context.emit('toggle-todo', index);
     };
 
+    const deleteTodo = (index) => {
+      context.emit('todo-idx', index);
+    };
+
     return {
       toggleTodo,
+      deleteTodo,
     };
   },
 };
