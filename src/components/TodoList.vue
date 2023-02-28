@@ -3,7 +3,7 @@
     <div class="card-body p-2 d-flex align-items-center">
       <div class="form-check flex-grow-1">
         <label class="form-check-label" :class="{ todo: todo.completed }">
-          <input class="form-check-input" type="checkbox" v-model="todo.completed" />
+          <input class="form-check-input" type="checkbox" :value="todo.completed" @change="toggleTodo(index)" />
           {{ todo.subject }}
         </label>
       </div>
@@ -19,6 +19,15 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  setup(props, context) {
+    const toggleTodo = (index) => {
+      context.emit('toggle-todo', index);
+    };
+
+    return {
+      toggleTodo,
+    };
   },
 };
 </script>

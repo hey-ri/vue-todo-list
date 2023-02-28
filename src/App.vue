@@ -5,7 +5,7 @@
 
     <div v-if="!todoList.length">추가된 Todo가 없습니다.</div>
 
-    <TodoList :todos="todoList" />
+    <TodoList :todos="todoList" @toggle-todo="toggleTodo" />
   </div>
 </template>
 
@@ -32,10 +32,19 @@ export default {
       todoList.value.splice(index, 1);
     };
 
+    const toggleTodo = (index) => {
+      console.log(index);
+
+      console.log(todoList.value[index]);
+      todoList.value[index].completed = !todoList.value[index].completed;
+      console.log(todoList.value[index]); // 앞뒤로 콘솔을 찍어주면서 트루, 폴스의 값을 확인하기
+    };
+
     return {
       addTodo,
       todoList,
       deleteTodo,
+      toggleTodo,
     };
   },
 };
