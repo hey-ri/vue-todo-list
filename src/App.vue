@@ -16,7 +16,7 @@
       <div class="card-body p-2">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" v-model="todo.completed" />
-          <label class="form-check-label" :style="todo.completed ? todoStyle : {}">
+          <label class="form-check-label" :class="{ todo: todo.completed }">
             {{ todo.subject }}
           </label>
         </div>
@@ -66,11 +66,8 @@ export default {
 </script>
 
 <style>
-.name {
-  color: #5a4c3a;
-}
-
-.names {
-  color: red;
+.todo {
+  color: gray;
+  text-decoration: line-through;
 }
 </style>
