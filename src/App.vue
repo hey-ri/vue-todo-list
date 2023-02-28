@@ -21,26 +21,26 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref } from 'vue';
 
 export default {
   setup() {
-    const todo = ref("");
+    const todo = ref('');
     const todoList = ref([
       {
         id: 1,
-        subject: "배터리바꾸기",
+        subject: '배터리바꾸기',
       },
       {
         id: 2,
-        subject: "우유사기",
+        subject: '우유사기',
       },
     ]);
     const hasError = ref(false);
 
     const onSubmit = () => {
       // e.preventDefault(); @submit:prevent가 같은 역할을 함
-      if (todo.value === "") {
+      if (todo.value === '') {
         hasError.value = true;
       } else {
         console.log(todo.value);
