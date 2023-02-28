@@ -26,6 +26,18 @@ export default {
   setup() {
     const todoList = ref([]);
     const error = ref('');
+    const getTodos = async () => {
+      try {
+        const res = await axios.get('http://localhost:3000/todos');
+        todoList.value = res.data;
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+        error.value = 'Somthing went wrong';
+      }
+    };
+
+    getTodos();
 
     const addTodo = async (todo) => {
       //인자 todo는 자식 컴포넌트에서 받아온 것을 의미함
