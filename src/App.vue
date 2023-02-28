@@ -1,17 +1,7 @@
 <template>
   <div class="container">
     <h1>To-Do List</h1>
-    <form @submit.prevent="onSubmit">
-      <div class="d-flex">
-        <div class="flex-grow-1 mr-2">
-          <input type="text" v-model="todo" class="form-control" placeholder="write the new to-do" />
-        </div>
-        <div>
-          <button class="btn btn-primary" type="submit">Add</button>
-        </div>
-      </div>
-      <div v-show="hasError" style="color: red; font-weight: bold">This field can't be empty</div>
-    </form>
+    <TodoSimpleForm @add-todo="addTodo" />
     <div v-if="!todoList.length">추가된 Todo가 없습니다.</div>
     <div v-for="(todo, index) in todoList" :key="todo.id" class="card mt-2">
       <div class="card-body p-2 d-flex align-items-center">
@@ -29,31 +19,19 @@
 
 <script>
 import { ref } from 'vue';
+import TodoSimpleForm from './components/TodoSimpleForm.vue';
 
 export default {
+  components: {
+    TodoSimpleForm,
+  },
   setup() {
-    const todo = ref('');
     const todoList = ref([]);
-    const hasError = ref(false);
-    const todoStyle = {
-      textDecoration: 'line-through',
-      color: 'gray',
-    };
 
-    const onSubmit = () => {
-      // e.preventDefault(); @submit:prevent가 같은 역할을 함
-      if (todo.value === '') {
-        hasError.value = true;
-      } else {
-        console.log(todo.value);
-        todoList.value.push({
-          id: Date.now(),
-          subject: todo.value,
-          completed: false,
-        });
-        hasError.value = false;
-        todo.value = '';
-      }
+    const addTodo = (todo) => {
+      //인자 todo는 자식 컴포넌트에서 받아온 것을 의미함
+      console.log(todo);
+      todoList.value.push(todo);
     };
 
     const deleteTodo = (index) => {
@@ -61,11 +39,8 @@ export default {
     };
 
     return {
-      todo,
-      onSubmit,
+      addTodo,
       todoList,
-      hasError,
-      todoStyle,
       deleteTodo,
     };
   },
