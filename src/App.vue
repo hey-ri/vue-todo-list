@@ -2,28 +2,22 @@
   <div class="container">
     <h1>To-Do List</h1>
     <TodoSimpleForm @add-todo="addTodo" />
+
     <div v-if="!todoList.length">추가된 Todo가 없습니다.</div>
-    <div v-for="(todo, index) in todoList" :key="todo.id" class="card mt-2">
-      <div class="card-body p-2 d-flex align-items-center">
-        <div class="form-check flex-grow-1">
-          <label class="form-check-label" :class="{ todo: todo.completed }">
-            <input class="form-check-input" type="checkbox" v-model="todo.completed" />
-            {{ todo.subject }}
-          </label>
-        </div>
-        <div><button class="btn btn-danger btn-small" @click="deleteTodo(index)">Delete</button></div>
-      </div>
-    </div>
+
+    <TodoList :todos="todoList" />
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
 import TodoSimpleForm from './components/TodoSimpleForm.vue';
+import TodoList from './components/TodoList.vue';
 
 export default {
   components: {
     TodoSimpleForm,
+    TodoList,
   },
   setup() {
     const todoList = ref([]);
