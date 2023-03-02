@@ -9,6 +9,26 @@
     <div v-if="!filterTodos.length" style="text-align: center; padding-top: 5px">Todo가 없습니다.</div>
 
     <TodoList :todos="filterTodos" @toggle-todo="toggleTodo" @todo-idx="deleteTodo" />
+    <hr />
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="#"> Previous </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">1</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">2</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">3</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -26,11 +46,19 @@ export default {
   setup() {
     const todoList = ref([]);
     const error = ref('');
+    const totalPage = ref(0);
+    const limit = 5;
+    const page = ref(1);
+
     const getTodos = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/todos');
+        const res = await axios.get(`http://localhost:3000/todos?_page=${page.value}&_limit=${limit}`);
+        // console.log(res.headers);
+        //결과의 headers에서 x-total-count를 받아온다.
+        // console.log(res.headers.x-total-count);
+        //-로 이어져 있는 변수는 []로 감싸고 ''로 묶어줘야 한다.
+        totalPage.value = res.headers['x-total-count'];
         todoList.value = res.data;
-        console.log(res);
       } catch (err) {
         console.log(err);
         error.value = 'Somthing went wrong get todo';
