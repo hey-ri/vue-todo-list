@@ -63,7 +63,7 @@ export default {
       currentPage.value = page;
       try {
         const res = await axios.get(
-          `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
+          `http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
         );
         // console.log(res.headers);
         //결과의 headers에서 x-total-count를 받아온다.
@@ -89,6 +89,7 @@ export default {
           subject: todo.subject,
           completed: todo.completed,
         });
+        getTodos(1);
         todoList.value.push(res.data);
       } catch (err) {
         console.log(err);
@@ -115,6 +116,7 @@ export default {
         console.log(res);
         //배열에서 삭제하게
         todoList.value.splice(index, 1);
+        getTodos(1);
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong from delete';
