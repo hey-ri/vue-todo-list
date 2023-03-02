@@ -33,7 +33,7 @@ export default {
         console.log(res);
       } catch (err) {
         console.log(err);
-        error.value = 'Somthing went wrong';
+        error.value = 'Somthing went wrong get todo';
       }
     };
 
@@ -52,7 +52,7 @@ export default {
         todoList.value.push(res);
       } catch (err) {
         console.log(err);
-        error.value = 'Somthing went wrong';
+        error.value = 'Somthing went wrong add todo';
       }
       // .then((res) => {
       //   //.then을 해주는 이유는 axios는 promise로 값을 반환하는데(비동기적) 그 행동이 끝나고 완료되었을 때~(.then일때~)그때 무슨 일을 해라 라는 의미로 사용됨
@@ -65,8 +65,20 @@ export default {
       // });
     };
 
-    const deleteTodo = (index) => {
-      todoList.value.splice(index, 1);
+    const deleteTodo = async (index) => {
+      error.value = '';
+      //id를 index로 찾기
+      const id = todoList.value[index].id;
+      try {
+        //데이터베이스에서도 삭제 가능하게
+        const res = await axios.delete('http://localhost:3000/todos/' + id);
+        console.log(res);
+        //배열에서 삭제하게
+        todoList.value.splice(index, 1);
+      } catch (err) {
+        console.log(err);
+        error.value = 'Something went wrong from delete';
+      }
     };
 
     const toggleTodo = (index) => {
