@@ -89,7 +89,7 @@ export default {
           subject: todo.subject,
           completed: todo.completed,
         });
-        todoList.value.push(res);
+        todoList.value.push(res.data);
       } catch (err) {
         console.log(err);
         error.value = 'Somthing went wrong add todo';
