@@ -3,7 +3,7 @@
     <div class="card-body p-2 d-flex align-items-center">
       <div class="form-check flex-grow-1">
         <label class="form-check-label" :class="{ todo: todo.completed }">
-          <input class="form-check-input" type="checkbox" :value="todo.completed" @change="toggleTodo(index)" />
+          <input class="form-check-input" type="checkbox" :checked="todo.completed" @change="toggleTodo(index)" />
           {{ todo.subject }}
         </label>
       </div>
