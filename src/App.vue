@@ -13,13 +13,21 @@
     <nav aria-label="Page navigation example">
       <ul class="pagination">
         <li class="page-item">
-          <a class="page-link" href="#" v-if="currentPage !== 1"> Previous </a>
+          <a class="page-link" @click="getTodos(currentPage - 1)" v-if="currentPage !== 1" style="cursor: pointer">
+            Previous
+          </a>
         </li>
         <li v-for="page in totalPage" :key="page" class="page-item" :class="currentPage === page ? 'active' : ''">
-          <a class="page-link" href="#"> {{ page }}</a>
+          <a class="page-link" @click="getTodos(page)" style="cursor: pointer"> {{ page }}</a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#" v-if="numberOfTodos !== currentPage">Next</a>
+          <a
+            class="page-link"
+            @click="getTodos(currentPage + 1)"
+            v-if="totalPage !== currentPage"
+            style="cursor: pointer"
+            >Next</a
+          >
         </li>
       </ul>
     </nav>
@@ -40,18 +48,18 @@ export default {
   setup() {
     const todoList = ref([]);
     const error = ref('');
-    //마지막 페이지
     const numberOfTodos = ref(0);
     const limit = 5;
     const currentPage = ref(1);
-
+    //마지막 페이지
     const totalPage = computed(() => {
       return Math.ceil(numberOfTodos.value / limit);
     });
 
-    const getTodos = async () => {
+    const getTodos = async (page = currentPage.value) => {
+      currentPage.value = page;
       try {
-        const res = await axios.get(`http://localhost:3000/todos?_page=${currentPage.value}&_limit=${limit}`);
+        const res = await axios.get(`http://localhost:3000/todos?_page=${page}&_limit=${limit}`);
         // console.log(res.headers);
         //결과의 headers에서 x-total-count를 받아온다.
         // console.log(res.headers.x-total-count);
@@ -147,6 +155,7 @@ export default {
       error,
       totalPage,
       currentPage,
+      getTodos,
     };
   },
 };
