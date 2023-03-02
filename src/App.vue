@@ -6,9 +6,9 @@
     <TodoSimpleForm @add-todo="addTodo" />
     <div style="color: red; text-align: center; padding-top: 5px">{{ error }}</div>
 
-    <div v-if="!filterTodos.length" style="text-align: center; padding-top: 5px">Todo가 없습니다.</div>
+    <div v-if="!todoList.length" style="text-align: center; padding-top: 5px">Todo가 없습니다.</div>
 
-    <TodoList :todos="filterTodos" @toggle-todo="toggleTodo" @todo-idx="deleteTodo" />
+    <TodoList :todos="todoList" @toggle-todo="toggleTodo" @todo-idx="deleteTodo" />
     <hr />
     <nav aria-label="Page navigation example">
       <ul class="pagination">
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, reactive } from 'vue';
+import { ref, computed, watch } from 'vue';
 import TodoSimpleForm from './components/TodoSimpleForm.vue';
 import TodoList from './components/TodoList.vue';
 import axios from 'axios';
@@ -51,33 +51,20 @@ export default {
     const numberOfTodos = ref(0);
     const limit = 5;
     const currentPage = ref(1);
-    const a = reactive({ b: 1, c: 3 });
-
-    watch(
-      () => [a.b, a.c],
-      //여러개를 watch 하고 싶으면 array 형태로 넣어주면 된다.
-      (current, prev) => {
-        //reactive는 함수, 함수의 형태로 넣어준다. 앞의 함수는 감지할 대상을 정해주고, 2로 변경되었을 때 실행되니까 콘솔에 결과값으로는 2 1 이 찍힌다.
-        console.log(current, prev);
-      }
-    );
-    a.b = 2;
-
-    watch([currentPage, numberOfTodos], (currentPage, prev) => {
-      //ref도 마찬가지로 2개를 넣어주고 싶으면 array로 넣으면 된다.
-      console.log('change the current page it is executed');
-      console.log(currentPage, prev);
-    });
 
     //마지막 페이지
     const totalPage = computed(() => {
       return Math.ceil(numberOfTodos.value / limit);
     });
 
+    const searchText = ref('');
+
     const getTodos = async (page = currentPage.value) => {
       currentPage.value = page;
       try {
-        const res = await axios.get(`http://localhost:3000/todos?_page=${page}&_limit=${limit}`);
+        const res = await axios.get(
+          `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
+        );
         // console.log(res.headers);
         //결과의 headers에서 x-total-count를 받아온다.
         // console.log(res.headers.x-total-count);
@@ -154,13 +141,16 @@ export default {
       }
     };
 
-    const searchText = ref('');
-    const filterTodos = computed(() => {
-      if (searchText.value) {
-        return todoList.value.filter((todo) => todo.subject.includes(searchText.value));
-      }
+    // const filterTodos = computed(() => {
+    //   if (searchText.value) {
+    //     return todoList.value.filter((todo) => todo.subject.includes(searchText.value));
+    //   }
 
-      return todoList.value;
+    //   return todoList.value;
+    // });
+    watch(searchText, (current, prev) => {
+      console.log(current, prev);
+      getTodos(1);
     });
 
     return {
@@ -169,7 +159,7 @@ export default {
       deleteTodo,
       toggleTodo,
       searchText,
-      filterTodos,
+      // filterTodos,
       error,
       totalPage,
       currentPage,
