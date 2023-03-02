@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import TodoSimpleForm from './components/TodoSimpleForm.vue';
 import TodoList from './components/TodoList.vue';
 import axios from 'axios';
@@ -51,6 +51,14 @@ export default {
     const numberOfTodos = ref(0);
     const limit = 5;
     const currentPage = ref(1);
+
+    watchEffect(() => {
+      console.log(currentPage.value);
+      console.log(numberOfTodos.value);
+      //   //initial 값이 찍히고, 그 reactive state값이 있거나 ref 값 혹은 props, computed의 값 변경이 되면 이 watchEffect의 함수가 다시 실행이 됨 그래서 두개의 콘솔을 찍었을 때의 결과 값이 1 0 1 12로 나옴 1,0은 처음의 값으로 currentPage의 ref이니셜 값이 1이니까 1이 찍히고, numberOfTodos도 마찬가지로 0이 이니셜 값이니까 0 이 찍힌다. numberOfTodos의 값이 json-server에 의해 변화하기 때문에 1,12의 값이 다시 표출 되는 것인데, 현재 json server에 12개의 todos가 들어있어서 12로 나타나는 것이다.
+      //하지만 숫자나 default한것을 변수에 담으면 값이 변경되지 않음
+    });
+
     //마지막 페이지
     const totalPage = computed(() => {
       return Math.ceil(numberOfTodos.value / limit);
