@@ -2,17 +2,39 @@
   <h1>To-Do Page</h1>
   <div v-if="loading">Loading...</div>
   <form v-else>
-    <div class="form-group">
-      <label>Todo Subject</label>
-      <input v-model="todo.subject" type="text" class="form-control" />
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Subject</label>
+          <input v-model="todo.subject" type="text" class="form-control" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Status</label>
+          <div>
+            <button
+              type="button"
+              class="btn"
+              :class="todo.completed ? 'btn-success' : 'btn-danger'"
+              @click="toggleTodoStatus"
+            >
+              {{ todo.completed ? 'Completed' : 'InCompleted' }}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <button class="btn btn-primary">save</button>
+
+    <button type="submit" class="btn btn-outline-danger mr-2" @click="moveToTodolistPage">cancel</button>
+    <button type="submit" class="btn btn-primary">save</button>
   </form>
 </template>
 <script>
+import router from '@/router';
 import axios from 'axios';
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 export default {
   setup() {
     const route = useRoute();
@@ -20,6 +42,7 @@ export default {
     console.log(route.params.id);
     const todo = ref(null);
     const loading = ref(true);
+    const router = useRouter();
 
     const getTodo = async () => {
       //async await로 요청을 하고 받아오는 것을 비동기로 처리하고 결과를 res에 담아서 콘솔에서 확인한다. 그러고 나서 콘솔에서 확인 한 값을 가지고 또 다시 데이터에 접근 가능하게 만들 수 있다.
@@ -32,9 +55,21 @@ export default {
 
     getTodo();
 
+    const toggleTodoStatus = () => {
+      todo.value.completed = !todo.value.completed;
+    };
+
+    const moveToTodolistPage = () => {
+      router.push({
+        name: 'todos',
+      });
+    };
+
     return {
       todo,
       loading,
+      toggleTodoStatus,
+      moveToTodolistPage,
     };
   },
 };
