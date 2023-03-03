@@ -6,6 +6,7 @@
         <div class="form-group">
           <label>Subject</label>
           <input v-model="todo.subject" type="text" class="form-control" />
+          <div v-if="subjectError" style="color: red">{{ subjectError }}</div>
         </div>
       </div>
       <div v-if="editing" class="col-6">
@@ -74,6 +75,8 @@ export default {
 
     const todoId = route.params.id;
 
+    const subjectError = ref('');
+
     const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
 
     // const showToast = ref(false);
@@ -129,6 +132,12 @@ export default {
     }
 
     const onSave = async () => {
+      //validation
+      subjectError.value = '';
+      if (!todo.value.subject) {
+        subjectError.value = 'subject is required';
+        return;
+      }
       try {
         let res;
         const data = {
@@ -165,6 +174,7 @@ export default {
       showToast,
       toastMessage,
       toastAlertType,
+      subjectError,
     };
   },
 };
