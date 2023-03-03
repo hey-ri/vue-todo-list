@@ -1,18 +1,18 @@
 <template>
   <div v-for="(todo, index) in todos" :key="todo.id" class="card mt-2">
-    <div class="card-body p-2 d-flex align-items-center" @click="moveToPage(todo.id)">
-      <div class="form-check flex-grow-1">
-        <label class="form-check-label" :class="{ todo: todo.completed }">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            :checked="todo.completed"
-            @change="toggleTodo(index, $event)"
-            @click.stop
-            style="cursor: pointer"
-          />
+    <div class="card-body p-2 d-flex align-items-center" @click="moveToPage(todo.id)" style="cursor: pointer">
+      <div class="flex-grow-1">
+        <input
+          type="checkbox"
+          :checked="todo.completed"
+          @change="toggleTodo(index, $event)"
+          @click.stop
+          class="mr-2"
+          style="cursor: pointer"
+        />
+        <span :class="{ todo: todo.completed }">
           {{ todo.subject }}
-        </label>
+        </span>
       </div>
       <div><button class="btn btn-danger" @click.stop="deleteTodo(index)">Delete</button></div>
     </div>
