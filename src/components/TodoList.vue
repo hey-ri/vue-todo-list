@@ -17,7 +17,7 @@
       <div><button class="btn btn-danger" @click.stop="openModal(todo.id)">Delete</button></div>
     </div>
   </div>
-  <Modal v-if="showModal" @close="closeModal" />
+  <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
 </template>
 
 <script>
@@ -37,14 +37,17 @@ export default {
   setup(props, { emit }) {
     const router = useRouter();
     const showModal = ref(false);
-    const todoDeleteId = ref(null);
+    let todoDeleteId = ref(null);
 
     const toggleTodo = (index, event) => {
       emit('toggle-todo', index, event.target.checked);
     };
 
-    const deleteTodo = (index, modal) => {
-      emit('todo-idx', index, modal);
+    const deleteTodo = () => {
+      emit('todo-idx', todoDeleteId.value);
+
+      showModal.value = false;
+      todoDeleteId = null;
     };
 
     const moveToPage = (todoId) => {

@@ -133,16 +133,16 @@ export default {
       // });
     };
 
-    const deleteTodo = async (index) => {
+    const deleteTodo = async (id) => {
       error.value = '';
       //id를 index로 찾기
-      const id = todoList.value[index].id;
+      // const id = todoList.value[index].id; // 이제 id를 받으니까 해당 줄이 필요가 없어짐
       try {
         //데이터베이스에서도 삭제 가능하게
         const res = await axios.delete('http://localhost:3000/todos/' + id);
         console.log(res);
         //배열에서 삭제하게
-        todoList.value.splice(index, 1);
+        todoList.value.splice(id, 1);
         getTodos(1);
       } catch (err) {
         console.log(err);
