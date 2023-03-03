@@ -30,10 +30,11 @@
     <button type="submit" class="btn btn-primary" :disabled="!todoUpdated">save</button>
   </form>
   <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+  <div id="hey">ri</div>
 </template>
 <script>
 import axios from 'axios';
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
@@ -43,6 +44,33 @@ export default {
     Toast,
   },
   setup() {
+    //dom의 마운트가 되기 전에
+    onBeforeMount(() => {
+      console.log(document.querySelector('#hey'));
+    });
+    //dom의 마운트가 되었을 때
+    onMounted(() => {
+      console.log(document.querySelector('#hey'));
+    });
+    console.log('hello');
+    //state가 바뀌기 전
+    onBeforeUpdate(() => {
+      console.log('before update');
+    });
+    //state가 바뀐 후
+    onUpdated(() => {
+      console.log('updated');
+    });
+
+    //해당 컴포넌트에 위치하면 되지 않음.
+    onBeforeUnmount(() => {
+      console.log('before unmount');
+    });
+    onUnmounted(() => {
+      // 메모리 정리를 해주기 위해 사용됨
+      console.log('unmounted');
+    });
+
     const route = useRoute();
     //클릭해서 들어온 todo page의 인덱스 번호를 나타내줌
     console.log(route.params.id);
