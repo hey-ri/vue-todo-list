@@ -34,10 +34,11 @@
 </template>
 <script>
 import axios from 'axios';
-import { ref, computed, onUnmounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
 
 export default {
   components: {
@@ -50,17 +51,28 @@ export default {
     const todo = ref(null);
     const originalTodo = ref(null);
     const loading = ref(true);
-    const showToast = ref(false);
-    const toastMessage = ref('');
-    const toastAlertType = ref('');
-    const timeout = ref(null);
     const router = useRouter();
 
     const todoId = route.params.id;
 
-    onUnmounted(() => {
-      clearTimeout(timeout.value);
-    });
+    const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
+
+    // const showToast = ref(false);
+    // const toastMessage = ref('');
+    // const toastAlertType = ref('');
+    // const timeout = ref(null);
+    // const triggerToast = (message, type = 'success') => {
+    //   toastMessage.value = message;
+    //   showToast.value = true;
+    //   toastAlertType.value = type;
+
+    //   timeout.value = setTimeout(() => {
+    //     console.log('셋 타임 아웃 실행중');
+    //     toastAlertType.value = '';
+    //     toastMessage.value = 's';
+    //     showToast.value = false;
+    //   }, 3000);
+    // };
 
     const getTodo = async () => {
       //async await로 요청을 하고 받아오는 것을 비동기로 처리하고 결과를 res에 담아서 콘솔에서 확인한다. 그러고 나서 콘솔에서 확인 한 값을 가지고 또 다시 데이터에 접근 가능하게 만들 수 있다.
@@ -107,19 +119,6 @@ export default {
         console.log(err);
         triggerToast('Something went to wrong from server', 'danger');
       }
-    };
-
-    const triggerToast = (message, type = 'success') => {
-      toastMessage.value = message;
-      showToast.value = true;
-      toastAlertType.value = type;
-
-      timeout.value = setTimeout(() => {
-        console.log('셋 타임 아웃 실행중');
-        toastAlertType.value = '';
-        toastMessage.value = 's';
-        showToast.value = false;
-      }, 3000);
     };
 
     return {

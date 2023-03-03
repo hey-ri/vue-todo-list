@@ -32,6 +32,7 @@
       </ul>
     </nav>
   </div>
+  <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 </template>
 
 <script>
@@ -39,11 +40,13 @@ import { ref, computed, watch } from 'vue';
 import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoList from '@/components/TodoList.vue';
 import axios from 'axios';
-
+import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
 export default {
   components: {
     TodoSimpleForm,
     TodoList,
+    Toast,
   },
   setup() {
     const todoList = ref([]);
@@ -51,6 +54,25 @@ export default {
     const numberOfTodos = ref(0);
     const limit = 5;
     const currentPage = ref(1);
+
+    const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
+
+    // const showToast = ref(false);
+    // const toastMessage = ref('');
+    // const toastAlertType = ref('');
+    // const toastTimeout = ref(null);
+    // const triggerToast = (message, type = 'success') => {
+    //   toastMessage.value = message;
+    //   showToast.value = true;
+    //   toastAlertType.value = type;
+
+    //   toastTimeout.value = setTimeout(() => {
+    //     console.log('셋 타임 아웃 실행중');
+    //     toastAlertType.value = '';
+    //     toastMessage.value = 's';
+    //     showToast.value = false;
+    //   }, 3000);
+    // };
 
     //마지막 페이지
     const totalPage = computed(() => {
@@ -74,6 +96,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Somthing went wrong get todo';
+        triggerToast('Something went to wrong from server', 'danger');
       }
     };
 
@@ -94,6 +117,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Somthing went wrong add todo';
+        triggerToast('Something went to wrong from server', 'danger');
       }
       // .then((res) => {
       //   //.then을 해주는 이유는 axios는 promise로 값을 반환하는데(비동기적) 그 행동이 끝나고 완료되었을 때~(.then일때~)그때 무슨 일을 해라 라는 의미로 사용됨
@@ -120,6 +144,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong from delete';
+        triggerToast('Something went to wrong from server', 'danger');
       }
     };
 
@@ -141,6 +166,7 @@ export default {
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong from completed';
+        triggerToast('Something went to wrong from server', 'danger');
       }
     };
 
@@ -177,6 +203,10 @@ export default {
       currentPage,
       getTodos,
       searchTodo,
+      toastMessage,
+      toastAlertType,
+      showToast,
+      triggerToast,
     };
   },
 };
