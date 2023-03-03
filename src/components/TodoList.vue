@@ -14,7 +14,7 @@
           {{ todo.subject }}
         </label>
       </div>
-      <div><button class="btn btn-danger btn-small" @click.stop="deleteTodo(index)">Delete</button></div>
+      <div><button class="btn btn-danger" @click.stop="deleteTodo(index)">Delete</button></div>
     </div>
   </div>
 </template>
