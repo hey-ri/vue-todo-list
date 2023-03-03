@@ -34,7 +34,7 @@
 </template>
 <script>
 import axios from 'axios';
-import { ref, computed, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
@@ -44,33 +44,6 @@ export default {
     Toast,
   },
   setup() {
-    //dom의 마운트가 되기 전에
-    onBeforeMount(() => {
-      console.log(document.querySelector('#hey'));
-    });
-    //dom의 마운트가 되었을 때
-    onMounted(() => {
-      console.log(document.querySelector('#hey'));
-    });
-    console.log('hello');
-    //state가 바뀌기 전
-    onBeforeUpdate(() => {
-      console.log('before update');
-    });
-    //state가 바뀐 후
-    onUpdated(() => {
-      console.log('updated');
-    });
-
-    //해당 컴포넌트에 위치하면 되지 않음.
-    onBeforeUnmount(() => {
-      console.log('before unmount');
-    });
-    onUnmounted(() => {
-      // 메모리 정리를 해주기 위해 사용됨
-      console.log('unmounted');
-    });
-
     const route = useRoute();
     //클릭해서 들어온 todo page의 인덱스 번호를 나타내줌
     console.log(route.params.id);
@@ -80,9 +53,14 @@ export default {
     const showToast = ref(false);
     const toastMessage = ref('');
     const toastAlertType = ref('');
+    const timeout = ref(null);
     const router = useRouter();
 
     const todoId = route.params.id;
+
+    onUnmounted(() => {
+      clearTimeout(timeout.value);
+    });
 
     const getTodo = async () => {
       //async await로 요청을 하고 받아오는 것을 비동기로 처리하고 결과를 res에 담아서 콘솔에서 확인한다. 그러고 나서 콘솔에서 확인 한 값을 가지고 또 다시 데이터에 접근 가능하게 만들 수 있다.
@@ -136,11 +114,12 @@ export default {
       showToast.value = true;
       toastAlertType.value = type;
 
-      setTimeout(() => {
+      timeout.value = setTimeout(() => {
+        console.log('셋 타임 아웃 실행중');
         toastAlertType.value = '';
         toastMessage.value = 's';
         showToast.value = false;
-      }, 2100);
+      }, 3000);
     };
 
     return {
