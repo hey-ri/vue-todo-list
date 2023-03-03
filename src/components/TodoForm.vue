@@ -6,7 +6,7 @@
         <div class="form-group">
           <label>Subject</label>
           <input v-model="todo.subject" type="text" class="form-control" />
-          <div v-if="subjectError" style="color: red">{{ subjectError }}</div>
+          <div v-if="subjectError" class="text-error">{{ subjectError }}</div>
         </div>
       </div>
       <div v-if="editing" class="col-6">
@@ -179,4 +179,13 @@ export default {
   },
 };
 </script>
-<style></style>
+<style scoped>
+.text-error {
+  color: red;
+  font-weight: bold;
+}
+</style>
+
+<style>
+/* 이렇게 2개의 style 태그를 넣을 수 있으며 두개를 넣는데 scoped가 써지지 않은 style은 전역으로 적용이 가능하다 */
+</style>
