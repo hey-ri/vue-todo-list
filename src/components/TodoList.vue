@@ -18,17 +18,19 @@
     </div>
   </div>
   <Teleport to="#modal">
-    <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
+    <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo"> </Modal>
   </Teleport>
 </template>
 
 <script>
 import { useRouter } from 'vue-router';
-import Modal from '@/components/Modal.vue';
+import Modal from '@/components/DeleteModal.vue';
 import { ref } from 'vue';
 
 export default {
-  components: { Modal },
+  components: {
+    Modal,
+  },
   props: {
     todos: {
       type: Array,
