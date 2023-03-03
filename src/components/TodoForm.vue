@@ -8,28 +8,39 @@
           <input v-model="todo.subject" type="text" class="form-control" />
         </div>
       </div>
-      <div class="col-6">
+      <div v-if="editing" class="col-6">
         <div class="form-group">
           <label>Status</label>
           <div>
             <button
-              type="button"
+              type="submit"
               class="btn"
               :class="todo.completed ? 'btn-success' : 'btn-danger'"
-              @click="toggleTodoStatus"
+              @click.prevent="toggleTodoStatus"
             >
               {{ todo.completed ? 'Completed' : 'InCompleted' }}
             </button>
           </div>
         </div>
       </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label>Body</label>
+          <textarea v-model="todo.body" class="form-control" cols="30" rows="10"></textarea>
+        </div>
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-outline-danger mr-2" @click="moveToTodolistPage">cancel</button>
-    <button type="submit" class="btn btn-primary" :disabled="!todoUpdated">save</button>
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-outline-danger mr-2" @click.prevent="moveToTodolistPage">cancel</button>
+      <button type="submit" class="btn btn-primary" :disabled="!todoUpdated">
+        {{ editing ? 'update' : 'create' }}
+      </button>
+    </div>
   </form>
   <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 </template>
+
 <script>
 import axios from 'axios';
 import { ref, computed } from 'vue';
@@ -42,13 +53,23 @@ export default {
   components: {
     Toast,
   },
-  setup() {
+  props: {
+    editing: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props) {
     const route = useRoute();
-    //클릭해서 들어온 todo page의 인덱스 번호를 나타내줌
+    //클릭해서 들어온 todo의 인덱스 번호를 나타내줌
     console.log(route.params.id);
-    const todo = ref(null);
+    const todo = ref({
+      subject: '',
+      completed: false,
+      body: '',
+    });
     const originalTodo = ref(null);
-    const loading = ref(true);
+    const loading = ref(false);
     const router = useRouter();
 
     const todoId = route.params.id;
@@ -73,6 +94,7 @@ export default {
     // };
 
     const getTodo = async () => {
+      loading.value = true;
       //async await로 요청을 하고 받아오는 것을 비동기로 처리하고 결과를 res에 담아서 콘솔에서 확인한다. 그러고 나서 콘솔에서 확인 한 값을 가지고 또 다시 데이터에 접근 가능하게 만들 수 있다.
       try {
         const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
@@ -84,6 +106,7 @@ export default {
       } catch (err) {
         console.log(err);
         triggerToast('somthing went to wrong from server', 'danger');
+        loading.value = false;
       }
     };
 
@@ -101,18 +124,31 @@ export default {
       });
     };
 
-    getTodo();
+    if (props.editing) {
+      getTodo();
+    }
 
     const onSave = async () => {
       try {
-        const res = await axios.put(`http://localhost:3000/todos/${todoId}`, {
+        let res;
+        const data = {
           subject: todo.value.subject,
           completed: todo.value.completed,
-        });
+          body: todo.value.body,
+        };
+        if (props.editing) {
+          res = await axios.put(`http://localhost:3000/todos/${todoId}`, data);
+          console.log('editing', res);
+          originalTodo.value = { ...res.data };
+        } else {
+          res = await axios.post(`http://localhost:3000/todos`, data);
+          console.log('create', res);
+          todo.value.subject = '';
+          todo.value.body = '';
+        }
 
-        console.log(res);
-        originalTodo.value = { ...res.data };
-        triggerToast('Successfully saved!');
+        const message = 'Successfully ' + (props.editing ? 'updated!' : 'created!');
+        triggerToast(message);
       } catch (err) {
         console.log(err);
         triggerToast('Something went to wrong from server', 'danger');
