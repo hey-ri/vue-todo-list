@@ -39,7 +39,9 @@
       </button>
     </div>
   </form>
-  <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+  <transition name="fade">
+    <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+  </transition>
 </template>
 
 <script>
@@ -183,6 +185,22 @@ export default {
 .text-error {
   color: red;
   font-weight: bold;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-80px);
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
 
