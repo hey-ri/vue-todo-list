@@ -27,20 +27,21 @@
     </div>
 
     <button type="submit" class="btn btn-outline-danger mr-2" @click="moveToTodolistPage">cancel</button>
-    <button type="submit" class="btn btn-primary">save</button>
+    <button type="submit" class="btn btn-primary" :disabled="!todoUpdated">save</button>
   </form>
 </template>
 <script>
-import router from '@/router';
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import _ from 'lodash';
 export default {
   setup() {
     const route = useRoute();
     //클릭해서 들어온 todo page의 인덱스 번호를 나타내줌
     console.log(route.params.id);
     const todo = ref(null);
+    const originalTodo = ref(null);
     const loading = ref(true);
     const router = useRouter();
 
@@ -51,11 +52,14 @@ export default {
       const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
 
       // console.log(res);
-      todo.value = res.data;
+      todo.value = { ...res.data };
+      originalTodo.value = { ...res.data };
       loading.value = false;
     };
 
-    getTodo();
+    const todoUpdated = computed(() => {
+      return !_.isEqual(todo.value, originalTodo.value);
+    });
 
     const toggleTodoStatus = () => {
       todo.value.completed = !todo.value.completed;
@@ -67,6 +71,8 @@ export default {
       });
     };
 
+    getTodo();
+
     const onSave = async () => {
       const res = await axios.put(`http://localhost:3000/todos/${todoId}`, {
         subject: todo.value.subject,
@@ -74,6 +80,7 @@ export default {
       });
 
       console.log(res);
+      originalTodo.value = { ...res.data };
     };
 
     return {
@@ -82,6 +89,7 @@ export default {
       toggleTodoStatus,
       moveToTodolistPage,
       onSave,
+      todoUpdated,
     };
   },
 };

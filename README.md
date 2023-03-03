@@ -31,6 +31,7 @@ npm run lint
 사용한 플러그인 - volar
 사용한 npm - json server
 axios
+lodash
 
 ### Customize configuration
 
