@@ -18,7 +18,7 @@
     </div>
   </div>
   <Teleport to="#modal">
-    <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo"> </Modal>
+    <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
   </Teleport>
 </template>
 
@@ -41,7 +41,7 @@ export default {
   setup(props, { emit }) {
     const router = useRouter();
     const showModal = ref(false);
-    let todoDeleteId = ref(null);
+    const todoDeleteId = ref(null);
 
     const toggleTodo = (index, event) => {
       emit('toggle-todo', index, event.target.checked);
@@ -51,7 +51,7 @@ export default {
       emit('todo-idx', todoDeleteId.value);
 
       showModal.value = false;
-      todoDeleteId = null;
+      todoDeleteId.value = null;
     };
 
     const moveToPage = (todoId) => {
