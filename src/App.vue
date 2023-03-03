@@ -1,5 +1,5 @@
 <template>
-  <div style="opacity: 0.5">
+  <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <router-link class="navbar-brand" :to="{ name: 'home' }">Hey Ri</router-link>
 
