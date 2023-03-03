@@ -17,7 +17,9 @@
       <div><button class="btn btn-danger" @click.stop="openModal(todo.id)">Delete</button></div>
     </div>
   </div>
-  <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
+  <Teleport to="#modal">
+    <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
+  </Teleport>
 </template>
 
 <script>
