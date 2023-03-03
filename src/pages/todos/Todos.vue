@@ -124,7 +124,8 @@ export default {
       }
     };
 
-    const toggleTodo = async (index) => {
+    const toggleTodo = async (index, checked) => {
+      console.log(checked);
       console.log(index);
 
       error.value = '';
@@ -132,12 +133,12 @@ export default {
       const id = todoList.value[index].id;
       try {
         await axios.patch('http://localhost:3000/todos/' + id, {
-          completed: !todoList.value[index].completed,
+          completed: checked,
         });
         //배열 업데이트
-        console.log(todoList.value[index]);
-        todoList.value[index].completed = !todoList.value[index].completed;
-        console.log(todoList.value[index]); // 앞뒤로 콘솔을 찍어주면서 트루, 폴스의 값을 확인하기
+        // console.log(todoList.value[index]);
+        todoList.value[index].completed = checked;
+        // console.log(todoList.value[index]); // 앞뒤로 콘솔을 찍어주면서 트루, 폴스의 값을 확인하기
       } catch (err) {
         console.log(err);
         error.value = 'Something went wrong from completed';
