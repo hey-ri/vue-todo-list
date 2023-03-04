@@ -8,7 +8,7 @@
           <input v-model="todo.subject" type="text" class="form-control" />
           <div v-if="subjectError" class="text-error">{{ subjectError }}</div>
         </div> -->
-        <Input label="subject" :subject="todo.subject" :error="subjectError" @update-subject="updateTodoSubject" />
+        <Input label="subject" v-model:subject="todo.subject" :error="subjectError" />
       </div>
       <div v-if="editing" class="col-6">
         <div class="form-group">
@@ -47,7 +47,7 @@
 
 <script>
 import axios from 'axios';
-import { ref, computed } from 'vue';
+import { ref, computed, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
@@ -83,6 +83,10 @@ export default {
     const subjectError = ref('');
 
     const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
+
+    onUpdated(() => {
+      console.log(todo.value.subject);
+    });
 
     // const showToast = ref(false);
     // const toastMessage = ref('');
@@ -169,11 +173,6 @@ export default {
       }
     };
 
-    const updateTodoSubject = (newValue) => {
-      todo.value.subject = newValue;
-      console.log(todo.value.subject);
-    };
-
     return {
       todo,
       loading,
@@ -185,7 +184,6 @@ export default {
       toastMessage,
       toastAlertType,
       subjectError,
-      updateTodoSubject,
     };
   },
 };

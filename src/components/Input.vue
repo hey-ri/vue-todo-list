@@ -24,8 +24,8 @@ export default {
   },
   setup(props, { emit }) {
     const onInput = (e) => {
-      console.log(e.target.value);
-      emit('update-subject', e.target.value);
+      // console.log(e.target.value)
+      emit('update:subject', e.target.value);
     };
 
     return {
