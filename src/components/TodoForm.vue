@@ -3,11 +3,12 @@
   <form v-else @submit.prevent="onSave">
     <div class="row">
       <div class="col-6">
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Subject</label>
           <input v-model="todo.subject" type="text" class="form-control" />
           <div v-if="subjectError" class="text-error">{{ subjectError }}</div>
-        </div>
+        </div> -->
+        <Input label="subject" :subject="todo.subject" :error="subjectError" @update-subject="updateTodoSubject" />
       </div>
       <div v-if="editing" class="col-6">
         <div class="form-group">
@@ -51,10 +52,12 @@ import { useRoute, useRouter } from 'vue-router';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
+import Input from '@/components/Input.vue';
 
 export default {
   components: {
     Toast,
+    Input,
   },
   props: {
     editing: {
@@ -166,6 +169,11 @@ export default {
       }
     };
 
+    const updateTodoSubject = (newValue) => {
+      todo.value.subject = newValue;
+      console.log(todo.value.subject);
+    };
+
     return {
       todo,
       loading,
@@ -177,15 +185,12 @@ export default {
       toastMessage,
       toastAlertType,
       subjectError,
+      updateTodoSubject,
     };
   },
 };
 </script>
 <style scoped>
-.text-error {
-  color: red;
-  font-weight: bold;
-}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease, transform 0.5s ease;
