@@ -1,22 +1,31 @@
 <template>
-  <div v-for="(todo, index) in todos" :key="todo.id" class="card mt-2">
-    <div class="card-body p-2 d-flex align-items-center" @click="moveToPage(todo.id)" style="cursor: pointer">
-      <div class="flex-grow-1">
-        <input
-          type="checkbox"
-          :checked="todo.completed"
-          @change="toggleTodo(index, $event)"
-          @click.stop
-          class="mr-2"
-          style="cursor: pointer"
-        />
-        <span :class="{ todo: todo.completed }">
-          {{ todo.subject }}
-        </span>
+  <!-- <div v-for="(todo, index) in todos" :key="todo.id" class="card mt-2"> -->
+  <List :items="todos">
+    <template #default="slotProps">
+      <!-- #defuault혹은 v-slot:default로 대체 가능, 밑에 줄 부터 todo. 으로 즉 그 저네 있던 v-for에 todo에 더이상 List 컴포넌트에서 slot을 사용중이기 때문에 사용, 접근을 하지 못함 따라서 List 컴포넌트에서 :item으로 데이터를 올려줬음 근데 그 slot에 name을 써주지 않았는데 써주지 않으면 그냥 default로 접근이 가능함 또 그것을 slotProps로 정해주었고 그것은 객체로 올라오기 때문에 slotProps.item.어쩌구로 접근이 가능함 -->
+      <div
+        class="card-body p-2 d-flex align-items-center"
+        @click="moveToPage(slotProps.item.id)"
+        style="cursor: pointer"
+      >
+        <div class="flex-grow-1">
+          <input
+            type="checkbox"
+            :checked="slotProps.item.completed"
+            @change="toggleTodo(index, $event)"
+            @click.stop
+            class="mr-2"
+            style="cursor: pointer"
+          />
+          <span :class="{ todo: slotProps.item.completed }">
+            {{ slotProps.item.subject }}
+          </span>
+        </div>
+        <div><button class="btn btn-danger" @click.stop="openModal(slotProps.item.id)">Delete</button></div>
       </div>
-      <div><button class="btn btn-danger" @click.stop="openModal(todo.id)">Delete</button></div>
-    </div>
-  </div>
+    </template>
+  </List>
+  <!-- </div> -->
   <Teleport to="#modal">
     <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
   </Teleport>
@@ -26,10 +35,12 @@
 import { useRouter } from 'vue-router';
 import Modal from '@/components/DeleteModal.vue';
 import { ref } from 'vue';
+import List from '@/components/List.vue';
 
 export default {
   components: {
     Modal,
+    List,
   },
   props: {
     todos: {
