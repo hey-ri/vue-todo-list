@@ -12,12 +12,14 @@
   </form>
 </template>
 <script>
-import { ref } from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 export default {
   emits: ['add-todo'],
-  setup(props, { emit }) {
+  setup() {
     const todo = ref('');
     const hasError = ref(false);
+
+    const { emit } = getCurrentInstance();
 
     const onSubmit = () => {
       // e.preventDefault(); @submit:prevent가 같은 역할을 함
