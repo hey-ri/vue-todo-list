@@ -24,7 +24,7 @@ export default {
     },
   },
   actions: {
-    triggerToast({ commit }, message, type = 'success') {
+    triggerToast({ commit }, payload) {
       // toastMessage.value = message;
       // toastAlertType.value = type;
       // showToast.value = true;
@@ -34,8 +34,8 @@ export default {
 
       commit('ADD_TOAST', {
         id: Date.now(),
-        message: message,
-        type: type,
+        message: payload.message,
+        type: payload.type,
       });
 
       setTimeout(() => {

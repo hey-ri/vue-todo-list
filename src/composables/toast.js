@@ -24,7 +24,7 @@ export const useToast = () => {
     }, 3000); */
 
     //vuex의 액션을 취하고 싶을 때는 dispatch
-    store.dispatch('toast/triggerToast', message, type);
+    store.dispatch('toast/triggerToast', { message: message, type: type });
   };
 
   //app.vue에서만 toast를 사용할 것이기 때문에 app.vue를 나간다는 것은 이 앱 자체를 나간다는 것이기 때문에 밑에줄이 필요 없어진다.
