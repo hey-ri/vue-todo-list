@@ -41,9 +41,6 @@
       </button>
     </div>
   </form>
-  <transition name="fade">
-    <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
-  </transition>
 </template>
 
 <script>
@@ -51,13 +48,11 @@ import axios from '@/axios';
 import { ref, computed, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import _ from 'lodash';
-import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
 import Input from '@/components/Input.vue';
 
 export default {
   components: {
-    Toast,
     Input,
   },
   props: {
@@ -195,24 +190,7 @@ export default {
   },
 };
 </script>
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-80px);
-}
-
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-</style>
+<style></style>
 
 <style>
 /* 이렇게 2개의 style 태그를 넣을 수 있으며 두개를 넣는데 scoped가 써지지 않은 style은 전역으로 적용이 가능하다 */
