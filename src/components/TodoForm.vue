@@ -168,6 +168,12 @@ export default {
 
         const message = 'Successfully ' + (props.editing ? 'updated!' : 'created!');
         triggerToast(message);
+
+        if (!props.editing) {
+          router.push({
+            name: 'todos',
+          });
+        }
       } catch (err) {
         console.log(err);
         triggerToast('Something went to wrong from server', 'danger');
