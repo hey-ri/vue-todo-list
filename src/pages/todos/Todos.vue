@@ -40,7 +40,7 @@
 <script>
 import { ref, computed, watch } from 'vue';
 import TodoList from '@/components/TodoList.vue';
-import axios from 'axios';
+import axios from '@/axios';
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
 import { useRouter } from 'vue-router';
@@ -88,7 +88,7 @@ export default {
       currentPage.value = page;
       try {
         const res = await axios.get(
-          `http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
+          `todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
         );
         // console.log(res.headers);
         //결과의 headers에서 x-total-count를 받아온다.
@@ -111,7 +111,7 @@ export default {
       error.value = '';
       //데이터 베이스 투두를 저장하기
       try {
-        const res = await axios.post('http://localhost:3000/todos', {
+        const res = await axios.post('todos', {
           subject: todo.subject,
           completed: todo.completed,
         });
@@ -139,7 +139,7 @@ export default {
       // const id = todoList.value[index].id; // 이제 id를 받으니까 해당 줄이 필요가 없어짐
       try {
         //데이터베이스에서도 삭제 가능하게
-        const res = await axios.delete('http://localhost:3000/todos/' + id);
+        const res = await axios.delete('todos/' + id);
         console.log(res);
         //배열에서 삭제하게
         todoList.value.splice(id, 1);
@@ -159,7 +159,7 @@ export default {
       //id를 index로 찾기
       const id = todoList.value[index].id;
       try {
-        await axios.patch('http://localhost:3000/todos/' + id, {
+        await axios.patch('todos/' + id, {
           completed: checked,
         });
         //배열 업데이트

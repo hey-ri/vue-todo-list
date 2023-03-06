@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/axios';
 import { ref, computed, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import _ from 'lodash';
@@ -110,7 +110,7 @@ export default {
       loading.value = true;
       //async await로 요청을 하고 받아오는 것을 비동기로 처리하고 결과를 res에 담아서 콘솔에서 확인한다. 그러고 나서 콘솔에서 확인 한 값을 가지고 또 다시 데이터에 접근 가능하게 만들 수 있다.
       try {
-        const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
+        const res = await axios.get(`todos/${todoId}`);
 
         // console.log(res);
         todo.value = { ...res.data };
@@ -156,11 +156,11 @@ export default {
           body: todo.value.body,
         };
         if (props.editing) {
-          res = await axios.put(`http://localhost:3000/todos/${todoId}`, data);
+          res = await axios.put(`todos/${todoId}`, data);
           console.log('editing', res);
           originalTodo.value = { ...res.data };
         } else {
-          res = await axios.post(`http://localhost:3000/todos`, data);
+          res = await axios.post(`todos`, data);
           console.log('create', res);
           todo.value.subject = '';
           todo.value.body = '';
