@@ -1,39 +1,53 @@
 export default {
   namespaced: true,
   state: {
-    showToast: false,
-    toastMessage: '',
-    toastAlertType: '',
+    toasts: [],
+    // showToast: false,
+    // toastMessage: '',
+    // toastAlertType: '',
   },
   mutations: {
-    UPDATE_TOAST_MESSAGE(state, payload) {
-      state.toastMessage = payload;
+    // UPDATE_TOAST_MESSAGE(state, payload) {
+    //   state.toastMessage = payload;
+    // },
+    // UPDATE_TOAST_ALERT_TYPE(state, payload) {
+    //   state.toastAlertType = payload;
+    // },
+    // UPDATE_TOAST_STATUS(state, payload) {
+    //   state.showToast = payload;
+    // },
+    ADD_TOAST(state, payload) {
+      state.toasts.push(payload);
     },
-    UPDATE_TOAST_ALERT_TYPE(state, payload) {
-      state.toastAlertType = payload;
-    },
-    UPDATE_TOAST_STATUS(state, payload) {
-      state.showToast = payload;
+    REMOVE_TOAST(state) {
+      state.toasts.shift();
     },
   },
   actions: {
     triggerToast({ commit }, message, type = 'success') {
       // toastMessage.value = message;
-      commit('UPDATE_TOAST_MESSAGE', message);
       // toastAlertType.value = type;
-      commit('UPDATE_TOAST_ALERT_TYPE', type);
       // showToast.value = true;
-      commit('UPDATE_TOAST_STATUS', true);
+      // commit('UPDATE_TOAST_MESSAGE', message);
+      // commit('UPDATE_TOAST_ALERT_TYPE', type);
+      // commit('UPDATE_TOAST_STATUS', true);
+
+      commit('ADD_TOAST', {
+        id: Date.now(),
+        message: message,
+        type: type,
+      });
 
       setTimeout(() => {
         console.log('셋 타임 아웃 실행중');
-        commit('UPDATE_TOAST_ALERT_TYPE', '');
         // toastAlertType.value = '';
-        commit('UPDATE_TOAST_MESSAGE', '');
         // toastMessage.value = '';
-        commit('UPDATE_TOAST_STATUS', false);
         // showToast.value = false;
-      }, 3000);
+        // commit('UPDATE_TOAST_ALERT_TYPE', '');
+        // commit('UPDATE_TOAST_MESSAGE', '');
+        // commit('UPDATE_TOAST_STATUS', false);
+        commit('REMOVE_TOAST');
+      }, 8000);
     },
   },
   getters: {

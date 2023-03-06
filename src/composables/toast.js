@@ -5,9 +5,10 @@ export const useToast = () => {
   const store = useStore();
 
   //computed 사용 이유, 값이 변경 된것을 감지하려고.
-  const showToast = computed(() => store.state.toast.showToast);
-  const toastMessage = computed(() => store.getters['toast/toastMessageWithSmile']);
-  const toastAlertType = computed(() => store.state.toast.toastAlertType);
+  const toasts = computed(() => store.state.toast.toasts);
+  // const showToast = computed(() => store.state.toast.showToast);
+  // const toastMessage = computed(() => store.getters['toast/toastMessageWithSmile']);
+  // const toastAlertType = computed(() => store.state.toast.toastAlertType);
   // const timeOut = computed(() => store.state.timeOut);
 
   const triggerToast = (message, type = 'success') => {
@@ -31,9 +32,10 @@ export const useToast = () => {
   //   clearTimeout(timeOut.value);
   // });
   return {
-    showToast,
-    toastMessage,
-    toastAlertType,
+    // showToast,
+    // toastMessage,
+    // toastAlertType,
     triggerToast,
+    toasts,
   };
 };
