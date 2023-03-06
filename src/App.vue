@@ -19,12 +19,18 @@
 <script>
 import Toast from './components/Toast.vue';
 import { useToast } from './composables/toast';
+import { useStore } from 'vuex';
 export default {
   components: {
     Toast,
   },
   setup() {
     const { toastMessage, toastAlertType, showToast, triggerToast } = useToast();
+    console.log(showToast.value);
+
+    const store = useStore();
+    console.log(store.state);
+    console.log(store.state.toastAlertType);
 
     return {
       toastMessage,

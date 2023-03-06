@@ -39,6 +39,7 @@ npm run lint
 사용한 npm - json server
 axios
 lodash
+vuex
 
 ### Customize configuration
 
