@@ -9,6 +9,7 @@
           <div v-if="subjectError" class="text-error">{{ subjectError }}</div>
         </div> -->
         <Input label="subject" v-model:subject="todo.subject" :error="subjectError" />
+        <!-- v-model은 여러개를 사용할 수 있음, 하나의 데이터를 바인딩 하려면 v-model:으로 해줘야 하지만 하나의 데이터를 바인딩 하면 v-model='todo.subject'로 적어줘도 된다. 그럴 때의 자식 컴포넌트의 props는 modelValue로 해야 하며, emit으로 보내는 값에도 ~~:modelValue로 이름을 지어주어야 한다.  -->
       </div>
       <div v-if="editing" class="col-6">
         <div class="form-group">
