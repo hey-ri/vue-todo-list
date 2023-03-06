@@ -3,6 +3,7 @@
   <List :items="todos">
     <template #default="{ item, index }">
       <!-- #defuault혹은 v-slot:default로 대체 가능, 밑에 줄 부터 todo. 으로 즉 그 저네 있던 v-for에 todo에 더이상 List 컴포넌트에서 slot을 사용중이기 때문에 사용, 접근을 하지 못함 따라서 List 컴포넌트에서 :item으로 데이터를 올려줬음 근데 그 slot에 name을 써주지 않았는데 써주지 않으면 그냥 default로 접근이 가능함 또 그것을 slotProps로 정해주었고 그것은 객체로 올라오기 때문에 slotProps.item.어쩌구로 접근이 가능함 index도 사용해 주었기 때문에 index도 올려주었음 -->
+      <!-- template 부분이 List 파일 slot에 들어감 -->
       <div class="card-body p-2 d-flex align-items-center" @click="moveToPage(item.id)" style="cursor: pointer">
         <div class="flex-grow-1">
           <input
