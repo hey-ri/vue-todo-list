@@ -5,9 +5,9 @@ export const useToast = () => {
   const store = useStore();
 
   //computed 사용 이유, 값이 변경 된것을 감지하려고.
-  const showToast = computed(() => store.state.showToast);
-  const toastMessage = computed(() => store.getters.toastMessageWithSmile);
-  const toastAlertType = computed(() => store.state.toastAlertType);
+  const showToast = computed(() => store.state.toast.showToast);
+  const toastMessage = computed(() => store.getters['toast/toastMessageWithSmile']);
+  const toastAlertType = computed(() => store.state.toast.toastAlertType);
   // const timeOut = computed(() => store.state.timeOut);
 
   const triggerToast = (message, type = 'success') => {
@@ -23,7 +23,7 @@ export const useToast = () => {
     }, 3000); */
 
     //vuex의 액션을 취하고 싶을 때는 dispatch
-    store.dispatch('triggerToast', message, type);
+    store.dispatch('toast/triggerToast', message, type);
   };
 
   //app.vue에서만 toast를 사용할 것이기 때문에 app.vue를 나간다는 것은 이 앱 자체를 나간다는 것이기 때문에 밑에줄이 필요 없어진다.
