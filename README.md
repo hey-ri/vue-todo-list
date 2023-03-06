@@ -14,6 +14,12 @@ npm install
 npm run serve
 ```
 
+json -server 실행
+
+```
+json-server --watch db.json
+```
+
 ### Compiles and minifies for production
 
 ```
@@ -29,6 +35,7 @@ npm run lint
 ### something used
 
 사용한 플러그인 - volar
+크롬 확장 프로그램 - vue.js devtools (beta 버전 = vue 3 지원 버전 <vue router 오류가 있음>)
 사용한 npm - json server
 axios
 lodash
