@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position: relative">
     <div class="d-flex justify-content-between">
       <h1>To-Do List</h1>
       <button class="btn btn-primary btn-sm" @click="moveToCreatePage">Create Todo</button>
@@ -12,27 +12,7 @@
 
     <TodoList :todos="todoList" @toggle-todo="toggleTodo" @todo-idx="deleteTodo" />
     <hr />
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" @click="getTodos(currentPage - 1)" v-if="currentPage !== 1" style="cursor: pointer">
-            Previous
-          </a>
-        </li>
-        <li v-for="page in totalPage" :key="page" class="page-item" :class="currentPage === page ? 'active' : ''">
-          <a class="page-link" @click="getTodos(page)" style="cursor: pointer"> {{ page }}</a>
-        </li>
-        <li class="page-item">
-          <a
-            class="page-link"
-            @click="getTodos(currentPage + 1)"
-            v-if="totalPage !== currentPage"
-            style="cursor: pointer"
-            >Next</a
-          >
-        </li>
-      </ul>
-    </nav>
+    <Pagenation :totalPage="totalPage" :currentPage="currentPage" @click="getTodos" v-if="todoList.length" />
   </div>
 </template>
 
@@ -42,10 +22,12 @@ import TodoList from '@/components/TodoList.vue';
 import axios from '@/axios';
 import { useToast } from '@/composables/toast';
 import { useRouter } from 'vue-router';
+import Pagenation from '@/components/Pagenation.vue';
 
 export default {
   components: {
     TodoList,
+    Pagenation,
   },
   setup() {
     const todoList = ref([]);
