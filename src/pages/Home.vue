@@ -1,7 +1,7 @@
 <template>
   <div>Home Page</div>
-  <div>{{ count }}</div>
-  <button @click="count++">Add</button>
+  <span>{{ count }}</span>
+  <button @click="count++" class="btn btn-primary ml-3">Add</button>
 </template>
 
 <script>

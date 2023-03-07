@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative">
+  <div style="position: relative; min-height: 470px">
     <div class="d-flex justify-content-between">
       <h1>To-Do List</h1>
       <button class="btn btn-primary btn-sm" @click="moveToCreatePage">Create Todo</button>
