@@ -108,6 +108,13 @@ export default {
         const res = await axios.get(`todos/${todoId}`);
 
         // console.log(res);
+        /* 
+        todo 를 res에 담고
+         ㄴ> todo.value = res.data
+        originalTodo.value = res.data
+        라고 하면 둘다 같은 주소를 바라보기 때문에 그것을 같은 객체에 담으면 그 값이 변했는지 아닌지 비교를 하지 못하게 되고
+        그러면 update 혹은 create 버튼의 disabled를 시킬 수 없다. 그래서 {...res.data}로 정의를 해주어야한다.
+        */
         todo.value = { ...res.data };
         originalTodo.value = { ...res.data };
         loading.value = false;
